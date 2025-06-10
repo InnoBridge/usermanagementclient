@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
           "@/*": ["src/*"],
+          "@innobridge/trpcmessengerclient": ["./node_modules/@innobridge/trpcmessengerclient/dist/index"]
     }
   },
-  "include": ["src/**/*", "tsup.config.ts", "vitest.config.ts"]
+  "include": ["src/**/*", "tsup.config.ts", "vitest.config.ts", "../usermanagement/src/storage/cached_base_client.ts"]
 }
