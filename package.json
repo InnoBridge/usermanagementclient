@@ -1,8 +1,16 @@
 {
   "name": "@innobridge/usermanagementclient",
-  "version": "0.0.0",
+  "version": "0.1.3",
   "description": "A react native version of @innobridge/usermanagement because node not supported RN",
   "author": "yilengyao <innobridgetechnology@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InnoBridge/usermanagement.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
   "license": "InnoBridge",
   "type": "module",
   "main": "dist/index.cjs",
