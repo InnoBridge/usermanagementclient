@@ -58,7 +58,7 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
     }
 
     async upsertConnectionRequest(request: ConnectionRequest): Promise<void> {
-        this.upsertConnectionRequests([request]);
+        await this.upsertConnectionRequests([request]);
     }
 
     async upsertConnectionRequests(requests: ConnectionRequest[]): Promise<void> {

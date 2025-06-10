@@ -51,7 +51,7 @@ const GET_USER_CONNECTION_REQUESTS_QUERY =
     WHERE (requester_id = ? OR receiver_id = ?)
     AND (? IS NULL OR status = ?)
     ORDER BY 
-        CASE WHEN respondedAt IS NOT NULL THEN responded_at ELSE created_at END DESC,
+        CASE WHEN responded_at IS NOT NULL THEN responded_at ELSE created_at END DESC,
         createdAt DESC;`;
 
 const UPSERT_CONNECTION_REQUESTS_QUERY = (requestCount: number): string => {
