@@ -1,0 +1,19 @@
+import { CachedBaseClient } from '@/storage/cached_base_client';
+import { 
+    Connection, 
+    ConnectionRequest, 
+    ConnectionRequestStatus 
+} from '@/models/connection';
+
+interface CachedConnectionsClient extends CachedBaseClient {
+    getAllConnectionRequests(userId: string, status?: ConnectionRequestStatus): Promise<ConnectionRequest[]>;
+    upsertConnectionRequest(request: ConnectionRequest): Promise<void>;
+    upsertConnectionRequests(requests: ConnectionRequest[]): Promise<void>;
+    deleteAllConnectionRequests(): Promise<void>;
+    upsertConnections(connections: Connection[]): Promise<void>;
+    deleteAllConnections(): Promise<void>;
+};
+
+export {
+    CachedConnectionsClient,
+};
