@@ -43,18 +43,7 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
             GET_USER_CONNECTION_REQUESTS_QUERY,
             [userId, userId, status || null, status || null]
         );
-        return result.map((connectionRequest: any) => {
-            return {
-                    requestId: connectionRequest.request_id,
-                    requesterId: connectionRequest.requester_id,
-                    receiverId: connectionRequest.receiver_id,
-                    greetingText: connectionRequest.greeting_text,
-                    status: connectionRequest.status,
-                    createdAt: connectionRequest.created_at,
-                    respondedAt: connectionRequest.responded_at
-                } as ConnectionRequest
-            }
-        );
+        return result.map(toConnectionRequests);
     }
 
     async upsertConnectionRequest(request: ConnectionRequest): Promise<void> {
@@ -67,11 +56,18 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
         }
         try {
             const query = UPSERT_CONNECTION_REQUESTS_QUERY(requests.length);
-            console.log("Upserting connection requests:", JSON.stringify(requests[0], null, 2));
             const params = requests.flatMap(request => [
                 request.requestId,
                 request.requesterId,
+                request.requesterUsername || null,
+                request.requesterFirstName || null,
+                request.requesterLastName || null,
+                request.requesterImageUrl || null,
                 request.receiverId,
+                request.receiverUsername || null,
+                request.receiverFirstName || null,
+                request.receiverLastName || null,
+                request.receiverImageUrl || null,
                 request.greetingText || null,
                 request.status.toString(),
                 request.createdAt,
@@ -102,7 +98,15 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
             const params = connections.flatMap(connection => [
                 connection.connectionId,
                 connection.userId1,
+                connection.userId1Username || null,
+                connection.userId1FirstName || null,
+                connection.userId1LastName || null,
+                connection.userId1ImageUrl || null,
                 connection.userId2,
+                connection.userId2Username || null,
+                connection.userId2FirstName || null,
+                connection.userId2LastName || null,
+                connection.userId2ImageUrl || null,
                 connection.connectedAt
             ]);
             await this.runAsync(query, params);
@@ -121,6 +125,26 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
         }
     }
 }
+
+const toConnectionRequests = (row: any): ConnectionRequest => {
+    return {
+        requestId: row.request_id,
+        requesterId: row.requester_id,
+        requesterFirstName: row.requester_first_name || null,
+        requesterLastName: row.requester_last_name || null,
+        requesterUsername: row.requester_username || null,
+        requesterImageUrl: row.requester_image_url || null,
+        receiverId: row.receiver_id,
+        receiverFirstName: row.receiver_first_name || null,
+        receiverLastName: row.receiver_last_name || null,
+        receiverUsername: row.receiver_username || null,
+        receiverImageUrl: row.receiver_image_url || null,
+        greetingText: row.greeting_text,
+        status: row.status,
+        createdAt: row.created_at,
+        respondedAt: row.responded_at
+    } as ConnectionRequest;
+};
 
 export {
     SqlliteConnectionsClient,

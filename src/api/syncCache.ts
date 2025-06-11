@@ -17,6 +17,7 @@ import {
 const { getConnectionRequests, getConnectionsByUserId } = connectionsApi;
 
 let isCacheInitialized = false;
+let syncInterval: NodeJS.Timeout | null = null;
 
 /**
  * 
@@ -57,25 +58,27 @@ const onLogin = async (
     }
 };
 
-const periodicSync = (userId: string, interval: number, jwt?: string) => {
+const periodicSync = (userId: string, intervalSeconds: number, jwt?: string) => {
     if (!isCacheInitialized) {
         console.warn("Cache not initialized. Skipping periodic sync.");
         return;
     }
+    stopPeriodicSync();
 
-    setInterval(async () => {
+    syncInterval = setInterval(async () => {
         try {
             await syncConnections(userId, jwt);
             await syncConnectionRequests(userId, jwt);
         } catch (error) {
             console.error("Error during periodic sync:", error);
         }
-    }, interval * 1000);
+    }, intervalSeconds * 1000);
 };
 
 const onLogout = async (userId: string) => {
     if (isCacheInitialized) {
         try {
+            stopPeriodicSync();
             await beginTransaction();
             await deleteAllConnections();
             await deleteAllConnectionRequests();
@@ -99,7 +102,7 @@ const syncConnections = async (userId: string, jwt?: string) => {
         await rollbackTransaction();
         throw error;
     }
-}
+};
 
 const syncConnectionRequests = async (userId: string, jwt?: string) => {
     await beginTransaction();
@@ -113,7 +116,15 @@ const syncConnectionRequests = async (userId: string, jwt?: string) => {
         await rollbackTransaction();
         throw error;
     }
-}
+};
+
+const stopPeriodicSync = () => {
+    if (syncInterval) {
+        clearInterval(syncInterval);
+        syncInterval = null;
+        console.log('⏹️ Stopped periodic sync');
+    }
+};
 
 export {
     onLogin,
