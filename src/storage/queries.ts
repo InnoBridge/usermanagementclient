@@ -87,6 +87,11 @@ const UPSERT_CONNECTION_REQUESTS_QUERY = (requestCount: number): string => {
 const DELETE_ALL_CONNECTION_REQUESTS_QUERY = 
     `DELETE FROM connection_requests;`;
 
+const GET_CONNECTIONS_BY_USER_ID_QUERY = 
+    `SELECT * FROM connections 
+    WHERE user_id1 = ? OR user_id2 = ?
+    ORDER BY connected_at DESC;`;
+
 const UPSERT_CONNECTIONS_QUERY = (connectionCount: number): string => {
     const valuesParts = Array(connectionCount).fill('(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').join(', ');
     return `
@@ -115,6 +120,7 @@ export {
     GET_USER_CONNECTION_REQUESTS_QUERY,
     UPSERT_CONNECTION_REQUESTS_QUERY,
     DELETE_ALL_CONNECTION_REQUESTS_QUERY,
+    GET_CONNECTIONS_BY_USER_ID_QUERY,
     UPSERT_CONNECTIONS_QUERY,
     DELETE_ALL_CONNECTIONS_QUERY
 }
