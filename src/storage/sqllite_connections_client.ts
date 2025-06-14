@@ -10,6 +10,7 @@ import {
     GET_USER_CONNECTION_REQUESTS_QUERY,
     UPSERT_CONNECTION_REQUESTS_QUERY,
     DELETE_ALL_CONNECTIONS_QUERY,
+    GET_CONNECTIONS_BY_USER_ID_QUERY,
     UPSERT_CONNECTIONS_QUERY,
     DELETE_ALL_CONNECTION_REQUESTS_QUERY
 } from "@/storage/queries"
@@ -89,6 +90,16 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
         }
     }
 
+    async getConnectionsByUserId(userId: string): Promise<Connection[]> {
+        try {
+            const result = await this.getAllAsync(GET_CONNECTIONS_BY_USER_ID_QUERY, [userId, userId]);
+            return result.map(toConnections);
+        } catch (error: any) {
+            console.error("Error fetching connections by user ID:", error.message);
+            throw error;
+        }
+    }
+
     async upsertConnections(connections: Connection[]): Promise<void> {
         if (!connections || connections.length === 0) {
             return;
@@ -145,6 +156,23 @@ const toConnectionRequests = (row: any): ConnectionRequest => {
         respondedAt: row.responded_at
     } as ConnectionRequest;
 };
+
+const toConnections = (row: any): Connection => {
+    return {
+        connectionId: row.connection_id,
+        userId1: row.user_id1,
+        userId1Username: row.user_id1_username || null,
+        userId1FirstName: row.user_id1_first_name || null,
+        userId1LastName: row.user_id1_last_name || null,
+        userId1ImageUrl: row.user_id1_image_url || null,
+        userId2: row.user_id2,
+        userId2Username: row.user_id2_username || null,
+        userId2FirstName: row.user_id2_first_name || null,
+        userId2LastName: row.user_id2_last_name || null,
+        userId2ImageUrl: row.user_id2_image_url || null,
+        connectedAt: row.connected_at
+    } as Connection;
+}
 
 export {
     SqlliteConnectionsClient,
