@@ -10,6 +10,7 @@ import {
     GET_USER_CONNECTION_REQUESTS_QUERY,
     UPSERT_CONNECTION_REQUESTS_QUERY,
     DELETE_ALL_CONNECTIONS_QUERY,
+    GET_CONNECTION_BY_ID_QUERY,
     GET_CONNECTIONS_BY_USER_ID_QUERY,
     UPSERT_CONNECTIONS_QUERY,
     DELETE_CONNECTION_BY_ID_QUERY,
@@ -87,6 +88,16 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
             await this.execAsync(DELETE_ALL_CONNECTION_REQUESTS_QUERY);
         } catch (error) {
             console.error("Error deleting all connection requests:", error);
+            throw error;
+        }
+    }
+
+    async getConnectionById(connectionId: number): Promise<Connection | null> {
+        try {
+            const result = await this.getFirstAsync(GET_CONNECTION_BY_ID_QUERY, [connectionId]);
+            return result ? toConnections(result) : null;
+        } catch (error: any) {
+            console.error("Error fetching connection by ID:", error.message);
             throw error;
         }
     }

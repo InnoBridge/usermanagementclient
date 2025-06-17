@@ -29,12 +29,19 @@ const deleteAllConnectionRequests = async (): Promise<void> => {
     return await cacheClient.deleteAllConnectionRequests();
 };
 
+const getConnectionById = async (connectionId: number): Promise<Connection | null> => {
+    if (!cacheClient) {
+        throw new Error("Cache client not initialized. Call initializeCache first.");
+    }
+    return await cacheClient.getConnectionById(connectionId);
+};
+
 const getConnectionsByUserId = async (userId: string): Promise<Connection[]> => {
     if (!cacheClient) {
         throw new Error("Cache client not initialized. Call initializeCache first.");
     }
     return await cacheClient.getConnectionsByUserId(userId);
-}
+};
 
 const upsertConnections = async (connections: Connection[]): Promise<void> => {
     if (!cacheClient) {
@@ -62,6 +69,7 @@ export {
     upsertConnectionRequest,
     upsertConnectionRequests,
     deleteAllConnectionRequests,
+    getConnectionById,
     getConnectionsByUserId,
     upsertConnections,
     deleteConnectionById,
