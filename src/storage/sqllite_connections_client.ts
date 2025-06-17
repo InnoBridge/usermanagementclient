@@ -132,7 +132,7 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
         try {
             await this.runAsync(DELETE_CONNECTION_BY_ID_QUERY, [connectionId]);
         } catch (error) {
-            console.error("Error deleting connection by ID:", error);
+            console.error("Error deleting connection by ID:", connectionId, error);
             throw error;
         }
     }
