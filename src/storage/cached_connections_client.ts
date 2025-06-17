@@ -12,6 +12,7 @@ interface CachedConnectionsClient extends CachedBaseClient {
     deleteAllConnectionRequests(): Promise<void>;
     getConnectionsByUserId(userId: string): Promise<Connection[]>;
     upsertConnections(connections: Connection[]): Promise<void>;
+    deleteConnectionById(connectionId: number): Promise<void>;
     deleteAllConnections(): Promise<void>;
 };
 

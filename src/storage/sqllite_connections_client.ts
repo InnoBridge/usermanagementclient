@@ -12,6 +12,7 @@ import {
     DELETE_ALL_CONNECTIONS_QUERY,
     GET_CONNECTIONS_BY_USER_ID_QUERY,
     UPSERT_CONNECTIONS_QUERY,
+    DELETE_CONNECTION_BY_ID_QUERY,
     DELETE_ALL_CONNECTION_REQUESTS_QUERY
 } from "@/storage/queries"
 
@@ -123,6 +124,15 @@ class SqlliteConnectionsClient extends SqlliteBaseClient implements CachedConnec
             await this.runAsync(query, params);
         } catch (error) {
             console.error("Error upserting connections:", error);
+            throw error;
+        }
+    }
+
+    async deleteConnectionById(connectionId: number): Promise<void> {
+        try {
+            await this.runAsync(DELETE_CONNECTION_BY_ID_QUERY, [connectionId]);
+        } catch (error) {
+            console.error("Error deleting connection by ID:", error);
             throw error;
         }
     }

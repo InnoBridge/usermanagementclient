@@ -107,6 +107,10 @@ const UPSERT_CONNECTIONS_QUERY = (connectionCount: number): string => {
     `;
 };
 
+const DELETE_CONNECTION_BY_ID_QUERY =
+    `DELETE FROM connections 
+    WHERE connection_id = ?;`;
+
 const DELETE_ALL_CONNECTIONS_QUERY = 
     `DELETE FROM connections;`;
 
@@ -122,5 +126,6 @@ export {
     DELETE_ALL_CONNECTION_REQUESTS_QUERY,
     GET_CONNECTIONS_BY_USER_ID_QUERY,
     UPSERT_CONNECTIONS_QUERY,
+    DELETE_CONNECTION_BY_ID_QUERY,
     DELETE_ALL_CONNECTIONS_QUERY
 }

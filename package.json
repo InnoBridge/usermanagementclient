@@ -54,6 +54,6 @@
     "node": "^20.0.0 || >=22.0.0"
   },
   "dependencies": {
-    "@innobridge/trpcmessengerclient": "^0.3.0"
+    "@innobridge/trpcmessengerclient": "^0.3.1"
   }
 }
