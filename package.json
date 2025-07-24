@@ -1,6 +1,6 @@
 {
   "name": "@innobridge/usermanagementclient",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A react native version of @innobridge/usermanagement because node not supported RN",
   "author": "yilengyao <innobridgetechnology@gmail.com>",
   "repository": {
@@ -54,6 +54,6 @@
     "node": "^20.0.0 || >=22.0.0"
   },
   "dependencies": {
-    "@innobridge/trpcmessengerclient": "^0.3.1"
+    "@innobridge/trpcmessengerclient": "^0.5.0"
   }
 }
